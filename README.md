@@ -98,7 +98,7 @@ Este projeto foi desenvolvido para o Processo de Treinamento de Área (PTA) do C
 
 3. Execute o projeto: 
     ```
-    uvicorn app.main:app
+    uvicorn app.main:app --port 7777
     ```
 
 4. Acesse a aplicação em seu navegador no endereço:

@@ -51,6 +51,7 @@ def home(request: Request):
           <h1>Agent Playground</h1>
           <p>Abra o playground em uma nova aba para testar seus agentes.</p>
           <p><strong>URL:</strong> <code>{playground_url}</code></p>
+          <p>Selecione "Teams" e em "Endpoint" digite: <code>http://{endpoint}/v1</code> ou <code>http://localhost:{port}/v1<code></p>
           <p style="margin-top:14px">
             <a class="button" href="{playground_url}" target="_blank" rel="noopener">Abrir Playground ↗</a>
           </p>
