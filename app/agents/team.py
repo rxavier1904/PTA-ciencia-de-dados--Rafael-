@@ -1,12 +1,21 @@
 from agno.team import Team
 
-from .another import another_agent
-from .dummy import dummy_agent
+from app.agents.tec_agente import tec_agent
+
+
 
 team = Team(
-    name="Example Team",
-    mode="route",
-    members=[dummy_agent, another_agent],
-    instructions="This team is designed to handle example tasks.",
-    show_members_responses=True
+    name="Omarket_Team",
+    mode="route",  # o Agno escolhe automaticamente o melhor agente
+    members=[
+        tec_agent,
+    ],
+    instructions=(
+        "Este é o time oficial O-Market Data Solutions. "
+        "Ele roteia automaticamente perguntas entre os três agentes "
+        "especializados (Tecnologia, Estrutura e Consumo). "
+        "Cada agente usa RAG estático baseado em PDFs oficiais do catálogo "
+        "para garantir respostas concretas e sem alucinação."
+    ),
+    show_members_responses=False,  # deixar True para debugging
 )
