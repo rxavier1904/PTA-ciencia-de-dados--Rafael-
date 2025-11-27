@@ -57,7 +57,8 @@ uvicorn==0.38.0
 virtualenv==20.32.0
 youtube-transcript-api==1.2.3
 yt-dlp==2025.10.14
-zendesk==1.0.3
-chromadb
 pypdf
 google-generativeai
+lancedb
+tantivy
+google-genai

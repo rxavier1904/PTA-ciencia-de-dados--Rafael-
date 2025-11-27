@@ -1,33 +1,32 @@
 from agno.agent import Agent
 from agno.models.google import Gemini
 from agno.knowledge.pdf import PDFKnowledgeBase
-from agno.vectordb.chroma import ChromaDb
+from agno.vectordb.lancedb import LanceDb, SearchType 
 from agno.embedder.google import GeminiEmbedder
 from pathlib import Path
 import os
 
-# Garante que a chave existe (segurança)
+# Garante que a chave existe
 if not os.getenv("GOOGLE_API_KEY"):
     print("⚠️ AVISO: GOOGLE_API_KEY não encontrada no ambiente!")
 
 # Configuração
 pdf_directory = Path("pdfs")
-chroma_db_path = Path(".chromadb")
+lancedb_path = "tmp/lancedb" 
 
 print(f"📚 Configurando Knowledge Base RAG com PDFs...")
 
-# Vector DB (Chroma)
-vector_db = ChromaDb(
-    collection="omarket_products",
-    path=str(chroma_db_path),
-    persistent_client=True, # Garante que salva no disco
-    embedder=GeminiEmbedder(
+# Vector DB (LanceDB)
+vector_db = LanceDb(
+    table_name="omarket_products", 
+    uri=lancedb_path,              
+    search_type=SearchType.vector,
+    embedder=GeminiEmbedder(       
         id="models/text-embedding-004",
         api_key=os.getenv("GOOGLE_API_KEY") 
     )
 )
 
-# Knowledge Base
 knowledge_base = PDFKnowledgeBase(
     path=str(pdf_directory),
     vector_db=vector_db,
@@ -35,27 +34,22 @@ knowledge_base = PDFKnowledgeBase(
 )
 
 print(f"📥 Carregando e indexando PDFs...")
-# Dica: recreate=False é ótimo, mas se adicionares PDFs novos, 
-# terás de apagar a pasta .chromadb ou mudar para True uma vez.
 knowledge_base.load(recreate=False) 
 
-# Contagem para validação
+# Validação 
 try:
-    pdf_count = len(list(pdf_directory.glob("**/*.pdf"))) # **/*.pdf busca em subpastas também
+    pdf_count = len(list(pdf_directory.glob("**/*.pdf")))
     print(f"✓ Base configurada: {pdf_count} PDFs encontrados.")
 except:
     print("✓ Base configurada.")
 
-# Agente
+# Agente 
 davi_agent = Agent(
     name="Agente de Produtos O-Market",
-    # CORREÇÃO DO MODELO AQUI:
-    model=Gemini(id="gemini-1.5-flash"), 
+    model=Gemini(id="gemini-2.5-flash"), 
     description="Especialista em catálogo de produtos da O-Market.",
-    
-    # Tuas instruções estão ótimas, mantive elas
     instructions="""⛔ VOCÊ SÓ PODE USAR INFORMAÇÕES DOS PDFs ⛔
-
+    
 **REGRA ABSOLUTA:**
 - Você NÃO tem acesso à internet
 - Você NÃO tem conhecimento geral
@@ -101,10 +95,10 @@ Composição, Estética, Uso Pessoal, Conteúdo, Serviços
 
 ⛔ SE NÃO ESTÁ NOS PDFs, VOCÊ NÃO SABE! ⛔""",
     knowledge=knowledge_base,
-    search_knowledge=True,  # OBRIGA busca RAG
-    read_chat_history=False,  # Desabilita contexto de conversas anteriores
-    add_references=True,  # Força citação de fontes
+    search_knowledge=True,
+    read_chat_history=False,
+    add_references=True,
     markdown=True,
     show_tool_calls=True,
-    add_datetime_to_instructions=False,  # Remove info de data/hora
+    add_datetime_to_instructions=False,
 )
