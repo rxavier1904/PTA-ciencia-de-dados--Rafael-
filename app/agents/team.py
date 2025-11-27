@@ -6,7 +6,7 @@ from app.agents.tec_agente import tec_agent
 
 team = Team(
     name="Omarket_Team",
-    mode="route",  # o Agno escolhe automaticamente o melhor agente
+    mode="route",  
     members=[
         tec_agent,
     ],
@@ -17,5 +17,5 @@ team = Team(
         "Cada agente usa RAG estático baseado em PDFs oficiais do catálogo "
         "para garantir respostas concretas e sem alucinação."
     ),
-    show_members_responses=False,  # deixar True para debugging
+    show_members_responses=False, 
 )

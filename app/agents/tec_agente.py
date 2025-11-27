@@ -44,7 +44,6 @@ def run_with_sources(question: str):
             for r in ref.references:
                 content = r["content"]
 
-                # Primeiras 20–25 palavras do chunk
                 palavras = content.replace("\n", " ").split()[:25]
                 preview = " ".join(palavras)
 
