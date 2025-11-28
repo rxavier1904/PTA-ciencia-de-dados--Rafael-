@@ -1,7 +1,6 @@
 from agno.agent import Agent
 from agno.models.google import Gemini
 from agno.tools.tavily import TavilyTools
-
 from app.knowledge.tec_pdf_kb import tec_knowledge
 
 tec_agent = Agent(

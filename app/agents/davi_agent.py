@@ -1,7 +1,8 @@
 from agno.agent import Agent
 from agno.models.google import Gemini
 from agno.knowledge.pdf import PDFKnowledgeBase
-from agno.vectordb.lancedb import LanceDb, SearchType 
+# MUDANÇA 1: Usar ChromaDb em vez de LanceDb
+from agno.vectordb.chroma import ChromaDb
 from agno.embedder.google import GeminiEmbedder
 from pathlib import Path
 import os
@@ -11,16 +12,15 @@ if not os.getenv("GOOGLE_API_KEY"):
     print("⚠️ AVISO: GOOGLE_API_KEY não encontrada no ambiente!")
 
 # Configuração
-pdf_directory = Path("pdfs")
-lancedb_path = "tmp/lancedb" 
+pdf_directory = Path("pdfs_davi") # Certifique-se que seus PDFs estão aqui (não na pasta 'tec')
+chroma_db_path = ".chromadb" # MUDANÇA 2: Caminho padrão do Chroma
 
 print(f"📚 Configurando Knowledge Base RAG com PDFs...")
 
-# Vector DB (LanceDB)
-vector_db = LanceDb(
-    table_name="omarket_products", 
-    uri=lancedb_path,              
-    search_type=SearchType.vector,
+# MUDANÇA 3: Configuração do Vector DB com Chroma
+vector_db = ChromaDb(
+    collection="omarket_products", # Nome da sua coleção (diferente da do colega)
+    path=chroma_db_path,
     embedder=GeminiEmbedder(       
         id="models/text-embedding-004",
         api_key=os.getenv("GOOGLE_API_KEY") 
@@ -33,11 +33,15 @@ knowledge_base = PDFKnowledgeBase(
     num_documents=5, 
 )
 
+# MUDANÇA 4: Ingestão Inteligente
+# Se você quiser garantir que ele leia os PDFs na primeira vez, 
+# pode mudar para recreate=True temporariamente ou rodar um script de setup.
 print(f"📥 Carregando e indexando PDFs...")
 knowledge_base.load(recreate=False) 
 
 # Validação 
 try:
+    # Ajuste o glob se seus PDFs estiverem em subpastas
     pdf_count = len(list(pdf_directory.glob("**/*.pdf")))
     print(f"✓ Base configurada: {pdf_count} PDFs encontrados.")
 except:
