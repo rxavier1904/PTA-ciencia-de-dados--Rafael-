@@ -17,7 +17,7 @@ from .agents import team
 app = Playground(
     name="O-Market Agent Playground",
     description="Ambiente de teste para o Agente de Produtos.",
-    teams=[team] # Aqui entra a equipa com o teu agente único
+    teams=[team] # Aqui entra a equipa com o teu agente único opa
 ).get_app()
 
 # 3. Rota da Home Page (Interface bonita)
