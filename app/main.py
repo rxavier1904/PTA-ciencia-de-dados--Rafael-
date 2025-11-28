@@ -4,16 +4,12 @@ from contextlib import asynccontextmanager
 from fastapi import Request
 from urllib.parse import quote
 from .agents import team
-from dotenv import load_dotenv
-load_dotenv()
-
 
 app = Playground(
     name="Example Playground",
     description="A playground for testing agents.",
     teams=[team]
 ).get_app()
-
 
 @app.get("/", response_class=HTMLResponse, include_in_schema=False)
 def home(request: Request):
@@ -66,7 +62,6 @@ def home(request: Request):
       </body>
     </html>
     """
-
 
 @app.on_event("startup")
 async def lifespan():
