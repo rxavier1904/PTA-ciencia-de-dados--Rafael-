@@ -10,6 +10,7 @@ if not os.getenv("GOOGLE_API_KEY"):
     print(" AVISO: GOOGLE_API_KEY não encontrada no ambiente!")
 
 
+
 pdf_directory = Path("pdfs_davi")    
 chroma_db_path = ".chromadb" 
 
@@ -19,23 +20,21 @@ print(f" Configurando Knowledge Base RAG com PDFs...")
 vector_db = ChromaDb(
     collection="omarket_products",
     path=chroma_db_path,
-    embedder=GeminiEmbedder(       
+    embedder=GeminiEmbedder(
         id="models/text-embedding-004",
-        api_key=os.getenv("GOOGLE_API_KEY") 
+        api_key=os.getenv("GOOGLE_API_KEY")
     )
 )
 
 knowledge_base = PDFKnowledgeBase(
     path=str(pdf_directory),
     vector_db=vector_db,
-    num_documents=5, 
+    num_documents=5,
 )
 
 
 print(f"Carregando e indexando PDFs...")
 knowledge_base.load(recreate=False) 
-
- 
 try:
     pdf_count = len(list(pdf_directory.glob("**/*.pdf")))
     print(f"✓ Base configurada: {pdf_count} PDFs encontrados.")
@@ -44,7 +43,7 @@ except:
 
 davi_agent = Agent(
     name="Agente de Produtos O-Market",
-    model=Gemini(id="gemini-2.5-flash"), 
+    model=Gemini(id="gemini-2.5-flash"),
     description="Especialista em catálogo de produtos da O-Market.",
     instructions=""" VOCÊ SÓ PODE USAR INFORMAÇÕES DOS PDFs 
     
@@ -72,7 +71,6 @@ RESPOSTA: "Não encontrei informações sobre iPhone no catálogo da O-Market."
 
 Pergunta: "Qual o peso do Flores Basic 100?"
 Busca RAG: [encontrou no PDF FLORES, página 1]
-
 
 **CATEGORIAS DO CATÁLOGO:**
 Composição, Estética, Uso Pessoal, Conteúdo, Serviços
