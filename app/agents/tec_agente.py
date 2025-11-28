@@ -21,42 +21,39 @@ tec_agent = Agent(
     knowledge=tec_knowledge,
     search_knowledge=True,
     tools=[TavilyTools()],
-    instructions=(
-        "Sempre inclua no final uma seção 'Trechos utilizados' com os trechos vindos do RAG."
-    ),
 )
 
 
-def run_with_sources(question: str):
-    resp = tec_agent.run(
-        question,
-        search_knowledge=True,
-        return_source_documents=True,
-    )
+# def run_with_sources(question: str):
+#     resp = tec_agent.run(
+#         question,
+#         search_knowledge=True,
+#         return_source_documents=True,
+#     )
 
-    resposta = resp.content or ""
+#     resposta = resp.content or ""
 
-    trechos_formatados = []
+#     trechos_formatados = []
 
-    if resp.extra_data and hasattr(resp.extra_data, "references"):
-        for ref in resp.extra_data.references:
-            for r in ref.references:
-                content = r["content"]
+#     if resp.extra_data and hasattr(resp.extra_data, "references"):
+#         for ref in resp.extra_data.references:
+#             for r in ref.references:
+#                 content = r["content"]
 
-                palavras = content.replace("\n", " ").split()[:25]
-                preview = " ".join(palavras)
+#                 palavras = content.replace("\n", " ").split()[:25]
+#                 preview = " ".join(palavras)
 
-                nome_pdf = r.get("name", "desconhecido") + ".pdf"
-                pagina = r.get("meta_data", {}).get("page", "N/A")
+#                 nome_pdf = r.get("name", "desconhecido") + ".pdf"
+#                 pagina = r.get("meta_data", {}).get("page", "N/A")
 
-                trechos_formatados.append(
-                    f"PDF: {nome_pdf} | Página: {pagina}\n"
-                    f"Tópico: {preview}..."
-                )
+#                 trechos_formatados.append(
+#                     f"PDF: {nome_pdf} | Página: {pagina}\n"
+#                     f"Tópico: {preview}..."
+#                 )
 
-    # Montagem final
-    if trechos_formatados:
-        resposta += "\n\n--- TRECHOS UTILIZADOS ---\n"
-        resposta += "\n\n".join(trechos_formatados)
+#     # Montagem final
+#     if trechos_formatados:
+#         resposta += "\n\n--- TRECHOS UTILIZADOS ---\n"
+#         resposta += "\n\n".join(trechos_formatados)
 
-    return resposta
+#     return resposta
