@@ -63,3 +63,4 @@ lancedb
 tantivy
 google-genai
 tavily-python
+chromadb

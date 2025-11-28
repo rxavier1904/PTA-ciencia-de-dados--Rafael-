@@ -8,14 +8,15 @@ import os
 
 # Garante que a chave existe
 if not os.getenv("GOOGLE_API_KEY"):
-    print("⚠️ AVISO: GOOGLE_API_KEY não encontrada no ambiente!")
+    print(" AVISO: GOOGLE_API_KEY não encontrada no ambiente!")
 
 # Configuração
-pdf_directory = Path("pdfs_davi") 
+pdf_directory = Path("pdfs_davi")    
 chroma_db_path = ".chromadb" 
 
-print(f"📚 Configurando Knowledge Base RAG com PDFs...")
+print(f" Configurando Knowledge Base RAG com PDFs...")
 
+#RAG
 vector_db = ChromaDb(
     collection="omarket_products",
     path=chroma_db_path,
@@ -46,7 +47,7 @@ davi_agent = Agent(
     name="Agente de Produtos O-Market",
     model=Gemini(id="gemini-2.5-flash"), 
     description="Especialista em catálogo de produtos da O-Market.",
-    instructions="""⛔ VOCÊ SÓ PODE USAR INFORMAÇÕES DOS PDFs ⛔
+    instructions=""" VOCÊ SÓ PODE USAR INFORMAÇÕES DOS PDFs 
     
 **REGRA ABSOLUTA:**
 - Você NÃO tem acesso à internet
@@ -62,36 +63,22 @@ davi_agent = Agent(
 
 **EXEMPLOS:**
 
-❌ Pergunta: "Qual a capital do Brasil?"
-✅ Busca RAG: [sem resultados relevantes]
-✅ RESPOSTA: "Não encontrei informações sobre capital do Brasil no catálogo da O-Market."
+Pergunta: "Qual a capital do Brasil?"
+Busca RAG: [sem resultados relevantes]
+RESPOSTA: "Não encontrei informações sobre capital do Brasil no catálogo da O-Market."
 
-❌ Pergunta: "Qual o preço de um iPhone?"
-✅ Busca RAG: [sem resultados relevantes]
-✅ RESPOSTA: "Não encontrei informações sobre iPhone no catálogo da O-Market."
+Pergunta: "Qual o preço de um iPhone?"
+Busca RAG: [sem resultados relevantes]
+RESPOSTA: "Não encontrei informações sobre iPhone no catálogo da O-Market."
 
-✅ Pergunta: "Qual o peso do Flores Basic 100?"
-✅ Busca RAG: [encontrou no PDF FLORES, página 1]
-✅ RESPOSTA:
-**Flores Basic 100** (SKU: OMKT-FLO-9534)
-- Peso: 3270g (3,27 kg)
-- Dimensões: 98x40x29cm
-- Material: Polímero
-- Garantia: 3 meses
-Fonte: O-Market Catalogo Oficial: FLORES, página 1
+Pergunta: "Qual o peso do Flores Basic 100?"
+Busca RAG: [encontrou no PDF FLORES, página 1]
 
-**FORMATO DE RESPOSTA POSITIVA:**
-**[Nome]** (SKU: [código])
-- Dimensões: [medidas]
-- Peso: [valor]
-- Material: [tipo]
-- Garantia: [período]
-Fonte: [PDF], página [X]
 
 **CATEGORIAS DO CATÁLOGO:**
 Composição, Estética, Uso Pessoal, Conteúdo, Serviços
 
-⛔ SE NÃO ESTÁ NOS PDFs, VOCÊ NÃO SABE! ⛔""",
+SE NÃO ESTÁ NOS PDFs, VOCÊ NÃO SABE! """,
     knowledge=knowledge_base,
     search_knowledge=True,
     read_chat_history=False,
