@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+load_dotenv()
 from agno.playground import Playground, serve_playground_app
 from fastapi.responses import HTMLResponse, RedirectResponse
 from contextlib import asynccontextmanager
