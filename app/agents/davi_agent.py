@@ -10,9 +10,8 @@ if not os.getenv("GOOGLE_API_KEY"):
     print(" AVISO: GOOGLE_API_KEY não encontrada no ambiente!")
 
 
-
-pdf_directory = Path("pdfs_davi")    
-chroma_db_path = ".chromadb" 
+pdf_directory = Path("pdfs_davi")
+chroma_db_path = ".chromadb"
 
 print(f" Configurando Knowledge Base RAG com PDFs...")
 
@@ -34,12 +33,12 @@ knowledge_base = PDFKnowledgeBase(
 
 
 print(f"Carregando e indexando PDFs...")
-knowledge_base.load(recreate=False) 
+knowledge_base.load(recreate=False)
 try:
     pdf_count = len(list(pdf_directory.glob("**/*.pdf")))
-    print(f"✓ Base configurada: {pdf_count} PDFs encontrados.")
+    print(f"Base configurada: {pdf_count} PDFs encontrados.")
 except:
-    print("✓ Base configurada.")
+    print("Base configurada.")
 
 davi_agent = Agent(
     name="Agente de Produtos O-Market",
