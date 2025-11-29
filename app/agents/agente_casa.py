@@ -6,11 +6,12 @@ from agno.embedder.google import GeminiEmbedder
 from pathlib import Path
 import os
 
+
 if not os.getenv("GOOGLE_API_KEY"):
     print(" AVISO: GOOGLE_API_KEY não encontrada no ambiente!")
 
 
-pdf_directory = Path("pdfs_davi")
+pdf_directory = Path("pdfs_gustavo")
 chroma_db_path = ".chromadb"
 
 print(f" Configurando Knowledge Base RAG com PDFs...")
@@ -34,17 +35,21 @@ knowledge_base = PDFKnowledgeBase(
 
 print(f"Carregando e indexando PDFs...")
 knowledge_base.load(recreate=False)
+
+
 try:
     pdf_count = len(list(pdf_directory.glob("**/*.pdf")))
     print(f"Base configurada: {pdf_count} PDFs encontrados.")
 except:
     print("Base configurada.")
 
-davi_agent = Agent(
-    name="Agente de Produtos O-Market",
+agente_casa_agent = Agent(
+    name="Especialista Casa & Conforto",
     model=Gemini(id="gemini-2.5-flash"),
-    description="Especialista em catálogo de produtos da O-Market.",
-    instructions=""" VOCÊ SÓ PODE USAR INFORMAÇÕES DOS PDFs 
+    description="Especialista de Produtos da Linha Casa & Conforto",
+    instructions=["Responda com base nas informações técnicas encontradas nos PDFs.",
+                  "Sempre cite o nome do arquivo PDF fonte."
+                  """ VOCÊ SÓ PODE USAR INFORMAÇÕES DOS PDFs 
     
 **REGRA ABSOLUTA:**
 - Você NÃO tem acesso à internet
@@ -68,13 +73,14 @@ Pergunta: "Qual o preço de um iPhone?"
 Busca RAG: [sem resultados relevantes]
 RESPOSTA: "Não encontrei informações sobre iPhone no catálogo da O-Market."
 
-Pergunta: "Qual o peso do Flores Basic 100?"
-Busca RAG: [encontrou no PDF FLORES, página 1]
+Pergunta: "Oque voce sabe sobre Construcao Ferramentas Construcao Premium 100?"
+Busca RAG: [encontrou no PDF CONSTRUCAO_FERRAMENTAS_CONSTRUCAO, página 1]
+
 
 **CATEGORIAS DO CATÁLOGO:**
 Composição, Estética, Uso Pessoal, Conteúdo, Serviços
 
-SE NÃO ESTÁ NOS PDFs, VOCÊ NÃO SABE! """,
+SE NÃO ESTÁ NOS PDFs, VOCÊ NÃO SABE! """],
     knowledge=knowledge_base,
     search_knowledge=True,
     read_chat_history=False,

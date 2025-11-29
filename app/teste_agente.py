@@ -11,11 +11,11 @@ def main():
     print("\nResponse\n")
     print(resp.content)
 
-    # Mostrar trechos usados
+
     if hasattr(resp, "extra_data") and resp.extra_data:
         refs = resp.extra_data.references
         if refs:
-            print("\n--- TRECHOS DO PDF UTILIZADOS ---\n")
+            print("\nTRECHOS DO PDF UTILIZADOS\n")
             for ref in refs:
                 for r in ref.references:
                     nome = r.get("name", "desconhecido")
