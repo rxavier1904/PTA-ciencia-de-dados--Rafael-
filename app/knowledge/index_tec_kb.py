@@ -1,4 +1,4 @@
-from app.knowledge.tec_pdf_kb import tec_knowledge
+from .tec_pdf_kb import tec_knowledge
 import asyncio
 from dotenv import load_dotenv
 load_dotenv()
