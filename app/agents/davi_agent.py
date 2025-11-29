@@ -6,17 +6,16 @@ from agno.embedder.google import GeminiEmbedder
 from pathlib import Path
 import os
 
-# Garante que a chave existe
 if not os.getenv("GOOGLE_API_KEY"):
     print(" AVISO: GOOGLE_API_KEY não encontrada no ambiente!")
 
-# Configuração
+
 pdf_directory = Path("pdfs_davi")    
 chroma_db_path = ".chromadb" 
 
 print(f" Configurando Knowledge Base RAG com PDFs...")
 
-#RAG
+
 vector_db = ChromaDb(
     collection="omarket_products",
     path=chroma_db_path,
@@ -33,7 +32,7 @@ knowledge_base = PDFKnowledgeBase(
 )
 
 
-print(f"📥 Carregando e indexando PDFs...")
+print(f"Carregando e indexando PDFs...")
 knowledge_base.load(recreate=False) 
 
  

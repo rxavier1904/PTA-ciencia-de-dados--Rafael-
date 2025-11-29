@@ -1,19 +1,18 @@
 from agno.team import Team
 from agno.models.google import Gemini
 
-# Importa os agentes de seus respectivos arquivos
 from .davi_agent import davi_agent
 from .tec_agente import tec_agent
 from .agente_casa import agente_casa_agent
 
 team = Team(
     name="O-Market Team",
-    mode="route", # O 'Gerente' decide quem trabalha
-    model=Gemini(id="gemini-2.5-flash"), 
-    
-    # Lista de membros da equipe
+    mode="route",  
+    model=Gemini(id="gemini-2.5-flash"),
+
+
     members=[davi_agent, tec_agent, agente_casa_agent],
-    
+
     instructions="""Você é o Gerente de Inteligência da O-Market.
     Sua missão é ler a pergunta do usuário e decidir qual especialista deve responder.
 
@@ -22,7 +21,7 @@ team = Team(
        - Foco: Hardware e funcionamento técnico.
 
     2. **Especialista Casa & Conforto (Casa):** <--- ADICIONEI ISSO AQUI
-       - USE PARA: Móveis, Cama, Mesa, Banho, Decoração, Utilidades Domésticas.
+       - USE PARA: Móveis, Cama, Mesa, Banho, Decoração, Utilidades Domésticas, e Construção.
        - Foco: Materiais, dimensões de móveis e conforto.
 
     3. **Agente de Produtos O-Market (Davi):** - USE PARA: O que sobrar (Moda, Livros, Alimentos, Beleza, Esportes).

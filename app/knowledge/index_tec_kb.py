@@ -7,7 +7,6 @@ load_dotenv()
 async def main():
     print("\nIndexando PDFs de Tecnologia...")
 
-    # recria tudo a partir dos PDFs
     await tec_knowledge.aload(recreate=True)
 
     print("\nRAG estático TEC atualizado com sucesso!\n")
